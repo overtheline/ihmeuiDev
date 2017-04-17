@@ -1,0 +1,32 @@
+{
+  "name": "animate",
+  "version": "1.0.0",
+  "main": "app.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack:help": "node_modules/.bin/webpack  --help",
+    "bundle": "node_modules/.bin/webpack --colors --config webpack.config.js ",
+    "server": "webpack-dev-server --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": "",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.0",
+    "style-loader": "^0.16.1",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {
+    "ihme-ui": "file:../ihme-ui",
+    "lodash": "^4.17.4",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-hot-loader": "^3.0.0-beta.6"
+  }
+}
