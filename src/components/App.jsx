@@ -1,4 +1,5 @@
 import React from 'react';
+import { assign } from 'lodash';
 // import styles from './App.css';
 // import printFib from './Fib';
 import FAData from '../../../ihme-ui/src/test-utils/data2';
@@ -34,6 +35,8 @@ class App extends React.Component {
       lineData: [],
       lineDomain: [],
     };
+
+    this.onChangeMeasure = this.onChangeMeasure.bind(this);
   }
 
   componentWillMount() {
@@ -44,6 +47,24 @@ class App extends React.Component {
     this.state.xDomain = lineDomainReducer(initialData);
     this.state.yDomain = lineRangeReducer(initialData);
     this.state.lineData = lineDataReducer(initialData);
+  }
+
+  onChangeMeasure(_, nextMeasure) {
+    const lineSettings = assign({}, this.state.lineSettings, { measure: nextMeasure });
+    let nextData;
+
+    if (this.cache.has(lineSettings)) {
+      nextData = this.cache.get(lineSettings);
+    } else {
+      nextData = dataGenerator.getData(this.state.lineSettings);
+    }
+
+    this.setState({
+      lineSettings,
+      lineData: lineDataReducer(nextData),
+      xDomain: lineDomainReducer(nextData),
+      yDomain: lineRangeReducer(nextData),
+    });
   }
 
   render() {
@@ -57,7 +78,10 @@ class App extends React.Component {
           yDomain={this.state.yDomain}
           data={this.state.lineData}
         />
-        <Controls />
+        <Controls
+          onChangeMeasure={this.onChangeMeasure}
+          selectedMeasure={this.state.lineSettings.measure}
+        />
       </div>
     );
   }
