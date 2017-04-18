@@ -36,5 +36,8 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-  ]
+  ],
+  resolve: {
+    extensions: [".js", ".json", ".jsx", ".css"]
+  }
 };
