@@ -1,10 +1,11 @@
 import React from 'react';
 // import styles from './App.css';
 // import printFib from './Fib';
-import { FAData } from 'ihme-ui';
+import FAData from '../../../ihme-ui/src/test-utils/data2';
 import CacheTree from '../utils/cachetree';
 
 import LineChart from './LineChart';
+import Controls from './Controls';
 
 import dataConfig from '../constants/dataConfig';
 import { locationList, yearList } from '../constants/metadata';
@@ -12,7 +13,7 @@ import { locationList, yearList } from '../constants/metadata';
 import { lineDataReducer, lineDomainReducer, lineRangeReducer } from '../reducers/lineData';
 
 // development components
-// import Timer from '../../../ihme-ui/src/ui/animate/src/utils/Timer.js';
+// import Timer from '../../../ihme-ui/src/ui/animate/src/utils/Timer';
 
 const dataGenerator = new FAData(dataConfig);
 
@@ -50,12 +51,13 @@ class App extends React.Component {
       <div>
         <h1>Charts</h1>
         <LineChart
-          width={400}
+          width={800}
           height={400}
           xDomain={this.state.xDomain}
           yDomain={this.state.yDomain}
           data={this.state.lineData}
         />
+        <Controls />
       </div>
     );
   }
