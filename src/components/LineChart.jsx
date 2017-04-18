@@ -6,6 +6,13 @@ import {
   MultiLine,
 } from 'ihme-ui';
 
+export const padding = {
+  top: 20,
+  bottom: 40,
+  left: 50,
+  right: 10,
+};
+
 const fieldAccessors = {
   data: 'values',
   key: 'key',
@@ -22,43 +29,60 @@ const areaStyle = {
   fillOpacity: 0.5,
 };
 
-export class LineChart extends React.Component {
-  render() {
-    const {
-      width,
-      height,
-      padding,
-      xDomain,
-      yDomain,
-      data,
-    } = this.props;
+const LineChart = function lineChart(props) {
+  const {
+    width,
+    height,
+    xDomain,
+    yDomain,
+    data,
+  } = props;
 
-    return (
-      <AxisChart
-        width={width}
-        height={height}
-        padding={padding}
-        xDomain={xDomain}
-        yDomain={yDomain}
-      >
-        <MultiLine
-          areaStyle={areaStyle}
-          data={data}
-          dataAccessors={dataAccessors}
-          fieldAccessors={fieldAccessors}
-        />
-        <XAxis />
-        <YAxis />
-      </AxisChart>
-    );
-  }
-}
+  return (
+    <AxisChart
+      width={width}
+      height={height}
+      padding={padding}
+      xDomain={xDomain}
+      yDomain={yDomain}
+    >
+      <MultiLine
+        areaStyle={areaStyle}
+        data={data}
+        dataAccessors={dataAccessors}
+        fieldAccessors={fieldAccessors}
+      />
+      <XAxis />
+      <YAxis />
+    </AxisChart>
+  );
+};
 
 LineChart.propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  padding: PropTypes.object.isRequired,
-  xDomain: PropTypes.array.isRequired,
-  yDomain: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
+  xDomain: PropTypes.arrayOf(PropTypes.number).isRequired,
+  yDomain: PropTypes.arrayOf(PropTypes.number).isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]),
+      values: PropTypes.arrayOf(
+        PropTypes.shape({
+          location: PropTypes.number,
+          mean: PropTypes.number,
+          mean_lb: PropTypes.number,
+          mean_ub: PropTypes.number,
+          measure: PropTypes.string,
+          risk: PropTypes.number,
+          type: PropTypes.number,
+          year: PropTypes.number,
+        }),
+      ),
+    }),
+  ).isRequired,
 };
+
+export default LineChart;
