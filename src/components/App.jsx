@@ -1,20 +1,18 @@
 import React from 'react';
-import { range } from 'lodash';
 // import styles from './App.css';
 // import printFib from './Fib';
 import { FAData } from 'ihme-ui';
 import CacheTree from '../utils/cachetree';
 
-import { LineChart } from './LineChart';
+import LineChart from './LineChart';
 
 import dataConfig from '../constants/dataConfig';
-import { padding, xDomain, yDomain } from '../constants/lineChartDims';
-import { locationList, measureList } from '../constants/metadata';
+import { locationList, yearList } from '../constants/metadata';
 
-import { lineDataReducer } from '../reducers/lineData';
+import { lineDataReducer, lineDomainReducer, lineRangeReducer } from '../reducers/lineData';
 
 // development components
-import Timer from '../../../ihme-ui/src/ui/animate/src/utils/Timer.js';
+// import Timer from '../../../ihme-ui/src/ui/animate/src/utils/Timer.js';
 
 const dataGenerator = new FAData(dataConfig);
 
@@ -30,9 +28,10 @@ class App extends React.Component {
         risk: 123,
         type: 1,
         location: locationList,
-        year: range(xDomain[0], xDomain[1] + 1),
+        year: yearList,
       },
       lineData: [],
+      lineDomain: [],
     };
   }
 
@@ -41,6 +40,8 @@ class App extends React.Component {
 
     this.cache.set(initialData);
 
+    this.state.xDomain = lineDomainReducer(initialData);
+    this.state.yDomain = lineRangeReducer(initialData);
     this.state.lineData = lineDataReducer(initialData);
   }
 
@@ -51,9 +52,8 @@ class App extends React.Component {
         <LineChart
           width={400}
           height={400}
-          padding={padding}
-          xDomain={xDomain}
-          yDomain={yDomain}
+          xDomain={this.state.xDomain}
+          yDomain={this.state.yDomain}
           data={this.state.lineData}
         />
       </div>
@@ -61,4 +61,4 @@ class App extends React.Component {
   }
 }
 
-export { App };
+export default App;
