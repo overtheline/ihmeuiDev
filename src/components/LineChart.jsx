@@ -1,26 +1,28 @@
 import React, { PropTypes } from 'react';
-import { groupdBy, map, reduce } from 'lodash';
 import {
   AxisChart,
   XAxis,
   YAxis,
+  MultiLine,
 } from 'ihme-ui';
 
-export default class LineChart extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const fieldAccessors = {
+  data: 'values',
+  key: 'key',
+};
 
-  componentWillReceiveProps(nextProps) {
-    const multiLineData = this.processData(nextProps.data);
-  }
+const dataAccessors = {
+  x: 'year',
+  y: 'mean',
+  y0: 'mean_lb',
+  y1: 'mean_ub',
+};
 
-  processData(data) {
-    const groupedByLocation = groupdBy(data, 'location')
+const areaStyle = {
+  fillOpacity: 0.5,
+};
 
-    console.log(groupedByLocation);
-  }
-
+export class LineChart extends React.Component {
   render() {
     const {
       width,
@@ -30,7 +32,6 @@ export default class LineChart extends React.Component {
       yDomain,
       data,
     } = this.props;
-    console.log(data);
 
     return (
       <AxisChart
@@ -40,18 +41,24 @@ export default class LineChart extends React.Component {
         xDomain={xDomain}
         yDomain={yDomain}
       >
-        <XAxis/>
-        <YAxis/>
+        <MultiLine
+          areaStyle={areaStyle}
+          data={data}
+          dataAccessors={dataAccessors}
+          fieldAccessors={fieldAccessors}
+        />
+        <XAxis />
+        <YAxis />
       </AxisChart>
     );
   }
 }
 
 LineChart.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  padding: PropTypes.object,
-  xDomain: PropTypes.array,
-  yDomain: PropTypes.array,
-  data: PropTypes.array,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  padding: PropTypes.object.isRequired,
+  xDomain: PropTypes.array.isRequired,
+  yDomain: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
 };

@@ -1,15 +1,17 @@
 import React from 'react';
-import styles from './App.css';
-import printFib from './Fib';
+import { range } from 'lodash';
+// import styles from './App.css';
+// import printFib from './Fib';
 import { FAData } from 'ihme-ui';
 import CacheTree from '../utils/cachetree';
-import { range } from 'lodash';
 
-import { default as LineChart } from './LineChart.jsx';
+import { LineChart } from './LineChart';
 
 import dataConfig from '../constants/dataConfig';
 import { padding, xDomain, yDomain } from '../constants/lineChartDims';
 import { locationList, measureList } from '../constants/metadata';
+
+import { lineDataReducer } from '../reducers/lineData';
 
 // development components
 import Timer from '../../../ihme-ui/src/ui/animate/src/utils/Timer.js';
@@ -23,51 +25,40 @@ class App extends React.Component {
 
     this.state = {
       cache: this.cache,
-      settings: {
-        line: {
-          measure: 'A',
-          risk: 123,
-          type: 1,
-          location: locationList,
-          year: range(xDomain[0], xDomain[1] + 1),
-        }
+      lineSettings: {
+        measure: 'A',
+        risk: 123,
+        type: 1,
+        location: locationList,
+        year: range(xDomain[0], xDomain[1] + 1),
       },
-      data: {
-        line: [],
-      },
+      lineData: [],
     };
   }
 
   componentWillMount() {
-    const initialData = dataGenerator.getData(this.state.settings.line);
-    this.cache.set(initialData);
-  }
+    const initialData = dataGenerator.getData(this.state.lineSettings);
 
-  componentDidMount() {
-    const data = this.cache.get(this.state.settings.line);
-//     this.setState({
-//       data: {
-//         line: data,
-//       },
-//     })
-    console.log(data);
+    this.cache.set(initialData);
+
+    this.state.lineData = lineDataReducer(initialData);
   }
 
   render() {
     return (
       <div>
-        <h1>Hello</h1>
+        <h1>Charts</h1>
         <LineChart
           width={400}
           height={400}
           padding={padding}
           xDomain={xDomain}
           yDomain={yDomain}
-          data={this.state.data.line}
+          data={this.state.lineData}
         />
       </div>
     );
   }
 }
 
-export default App;
+export { App };
