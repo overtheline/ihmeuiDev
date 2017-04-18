@@ -1,49 +1,39 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Group, Option } from 'ihme-ui';
 import { map } from 'lodash';
 
-const data = [
-  { name: 'one', value: 1 },
-  { name: 'two', value: 2 },
-  { name: 'three', value: 3 },
-];
+import { measureList } from '../constants/metadata';
 
-class Controls extends React.Component {
-  constructor() {
-    super();
+const data = map(measureList, m => ({ name: `Measure: ${m}`, value: m }));
 
-    this.state = {
-      selectedItem: 1,
-    };
+const Controls = function controls(props) {
+  const {
+    onChangeMeasure,
+    selectedMeasure,
+  } = props;
 
-    this.onClick = this.onClick.bind(this);
-  }
+  return (
+    <Group onClick={onChangeMeasure}>
+      {
+        map(
+          data,
+          datum => (
+            <Option
+              key={datum.value}
+              text={datum.name}
+              selected={selectedMeasure === datum.value}
+              value={datum.value}
+            />
+          ),
+        )
+      }
+    </Group>
+  );
+};
 
-  onClick(_, value) {
-    this.setState({
-      selectedItem: value,
-    });
-  }
-
-  render() {
-    return (
-      <Group onClick={this.onClick}>
-        {
-          map(
-            data,
-            datum => (
-              <Option
-                key={datum.value}
-                text={datum.name}
-                selected={this.state.selectedItem === datum.value}
-                value={datum.value}
-              />
-            ),
-          )
-        }
-      </Group>
-    );
-  }
-}
+Controls.propTypes = {
+  onChangeMeasure: PropTypes.func.isRequired,
+  selectedMeasure: PropTypes.string.isRequired,
+};
 
 export default Controls;
