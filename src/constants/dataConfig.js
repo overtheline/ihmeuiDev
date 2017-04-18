@@ -10,6 +10,6 @@ const dataConfig = {
     key: 'mean',
     uncertainty: ['mean_lb', 'mean_ub'],
   },
-}
+};
 
 export default dataConfig;
