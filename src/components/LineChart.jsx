@@ -3,8 +3,8 @@ import {
   AxisChart,
   XAxis,
   YAxis,
-  MultiLine,
 } from 'ihme-ui';
+import MultiLine from '../../../ihme-ui/src/ui/shape/src/multi-line';
 
 import colorScale from '../utils/color';
 
