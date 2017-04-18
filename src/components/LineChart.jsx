@@ -6,6 +6,8 @@ import {
   MultiLine,
 } from 'ihme-ui';
 
+import colorScale from '../utils/color';
+
 export const padding = {
   top: 20,
   bottom: 40,
@@ -48,6 +50,7 @@ const LineChart = function lineChart(props) {
     >
       <MultiLine
         areaStyle={areaStyle}
+        colorScale={colorScale}
         data={data}
         dataAccessors={dataAccessors}
         fieldAccessors={fieldAccessors}
