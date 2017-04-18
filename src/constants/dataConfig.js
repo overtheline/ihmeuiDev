@@ -4,6 +4,8 @@ const dataConfig = {
     {
       key: 'year',
       model: 'randomModel',
+      startRange: [100, 1500],
+      uncertainty: 50,
     },
   ],
   dataKeyField: {
