@@ -45,11 +45,11 @@ class App extends React.Component {
 
   componentDidMount() {
     const data = this.cache.get(this.state.settings.line);
-    this.setState({
-      data: {
-        line: data,
-      },
-    })
+//     this.setState({
+//       data: {
+//         line: data,
+//       },
+//     })
     console.log(data);
   }
 
