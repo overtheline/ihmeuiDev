@@ -6,13 +6,11 @@ import {
 } from 'ihme-ui';
 import MultiLine from '../../../ihme-ui/src/ui/shape/src/multi-line';
 
-import colorScale from '../utils/color';
-
 export const padding = {
   top: 20,
   bottom: 40,
   left: 50,
-  right: 10,
+  right: 20,
 };
 
 const fieldAccessors = {
@@ -38,10 +36,12 @@ const LineChart = function lineChart(props) {
     xDomain,
     yDomain,
     data,
+    colorScale,
   } = props;
 
   return (
     <AxisChart
+      clipPath
       width={width}
       height={height}
       padding={padding}
@@ -62,6 +62,7 @@ const LineChart = function lineChart(props) {
 };
 
 LineChart.propTypes = {
+  colorScale: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   xDomain: PropTypes.arrayOf(PropTypes.number).isRequired,
