@@ -1,11 +1,13 @@
 import React from 'react';
 import { assign } from 'lodash';
-// import styles from './App.css';
+import styles from './App.css';
 // import printFib from './Fib';
 import FAData from '../../../ihme-ui/src/test-utils/data2';
 import CacheTree from '../utils/cachetree';
+import colorScale from '../utils/color';
 
 import LineChart from './LineChart';
+import ScatterChart from './ScatterChart';
 import Controls from './Controls';
 
 import dataConfig from '../constants/dataConfig';
@@ -21,7 +23,7 @@ const dataGenerator = new FAData(dataConfig);
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.cache = new CacheTree(['measure', 'risk', 'type', 'location', 'year'], 1000);
+    this.cache = new CacheTree(['measure', 'risk', 'type', 'location', 'year'], 100000);
 
     this.state = {
       cache: this.cache,
@@ -56,7 +58,8 @@ class App extends React.Component {
     if (this.cache.has(lineSettings)) {
       nextData = this.cache.get(lineSettings);
     } else {
-      nextData = dataGenerator.getData(this.state.lineSettings);
+      nextData = dataGenerator.getData(lineSettings);
+      this.cache.set(nextData);
     }
 
     this.setState({
@@ -69,15 +72,30 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.app}>
         <h1>Charts</h1>
-        <LineChart
-          width={800}
-          height={400}
-          xDomain={this.state.xDomain}
-          yDomain={this.state.yDomain}
-          data={this.state.lineData}
-        />
+        <div className={styles['charts-container']}>
+          <div className={styles.chart}>
+            <LineChart
+              width={500}
+              height={300}
+              xDomain={this.state.xDomain}
+              yDomain={this.state.yDomain}
+              data={this.state.lineData}
+              colorScale={colorScale}
+            />
+          </div>
+          <div className={styles.chart}>
+            <ScatterChart
+              width={500}
+              height={300}
+              xDomain={this.state.xDomain}
+              yDomain={this.state.yDomain}
+              data={this.state.lineData}
+              colorScale={colorScale}
+            />
+          </div>
+        </div>
         <Controls
           onChangeMeasure={this.onChangeMeasure}
           selectedMeasure={this.state.lineSettings.measure}
