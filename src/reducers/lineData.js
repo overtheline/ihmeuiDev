@@ -1,4 +1,4 @@
-import { forEach, groupBy, map, reduce, sortBy } from 'lodash';
+import { assign, forEach, groupBy, map, reduce, sortBy } from 'lodash';
 
 function getBounds(...params) {
   return (acc, datum) => {
@@ -18,7 +18,9 @@ function getBounds(...params) {
 }
 
 export function lineDataReducer(data) {
-  const locationGroupedData = groupBy(data, 'location');
+  // append id to data
+  const augmentedData = map(data, (datum, index) => assign(datum, { id: index }));
+  const locationGroupedData = groupBy(augmentedData, 'location');
 
   const locationData = map(locationGroupedData, (values, key) => (
     {
