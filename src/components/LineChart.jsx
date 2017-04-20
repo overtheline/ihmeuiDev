@@ -31,6 +31,7 @@ const areaStyle = {
 
 const LineChart = function lineChart(props) {
   const {
+    animate,
     width,
     height,
     xDomain,
@@ -49,6 +50,7 @@ const LineChart = function lineChart(props) {
       yDomain={yDomain}
     >
       <MultiLine
+        animate={animate}
         areaStyle={areaStyle}
         colorScale={colorScale}
         data={data}
@@ -62,6 +64,7 @@ const LineChart = function lineChart(props) {
 };
 
 LineChart.propTypes = {
+  animate: PropTypes.shape({}),
   colorScale: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
@@ -87,6 +90,10 @@ LineChart.propTypes = {
       ),
     }),
   ).isRequired,
+};
+
+LineChart.defaultProps = {
+  animate: false,
 };
 
 export default LineChart;

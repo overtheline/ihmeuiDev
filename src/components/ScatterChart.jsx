@@ -27,6 +27,7 @@ const dataAccessors = {
 
 const ScatterChart = function scatterChart(props) {
   const {
+    animate,
     width,
     height,
     xDomain,
@@ -45,6 +46,7 @@ const ScatterChart = function scatterChart(props) {
       yDomain={yDomain}
     >
       <MultiScatter
+        animate={animate}
         colorScale={colorScale}
         data={data}
         dataAccessors={dataAccessors}
@@ -57,6 +59,7 @@ const ScatterChart = function scatterChart(props) {
 };
 
 ScatterChart.propTypes = {
+  animate: PropTypes.shape({}),
   colorScale: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
@@ -82,6 +85,10 @@ ScatterChart.propTypes = {
       ),
     }),
   ).isRequired,
+};
+
+ScatterChart.defaultProps = {
+  animate: PropTypes.shape({}),
 };
 
 export default ScatterChart;
