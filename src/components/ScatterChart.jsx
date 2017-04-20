@@ -4,7 +4,7 @@ import {
   XAxis,
   YAxis,
 } from 'ihme-ui';
-import MultiLine from '../../../ihme-ui/src/ui/shape/src/multi-line';
+import MultiScatter from '../../../ihme-ui/src/ui/shape/src/multi-scatter';
 
 export const padding = {
   top: 20,
@@ -21,15 +21,11 @@ const fieldAccessors = {
 const dataAccessors = {
   x: 'year',
   y: 'mean',
-  y0: 'mean_lb',
-  y1: 'mean_ub',
+  key: 'id',
+  fill: 'location',
 };
 
-const areaStyle = {
-  fillOpacity: 0.5,
-};
-
-const LineChart = function lineChart(props) {
+const ScatterChart = function scatterChart(props) {
   const {
     animate,
     width,
@@ -49,9 +45,8 @@ const LineChart = function lineChart(props) {
       xDomain={xDomain}
       yDomain={yDomain}
     >
-      <MultiLine
+      <MultiScatter
         animate={animate}
-        areaStyle={areaStyle}
         colorScale={colorScale}
         data={data}
         dataAccessors={dataAccessors}
@@ -63,7 +58,7 @@ const LineChart = function lineChart(props) {
   );
 };
 
-LineChart.propTypes = {
+ScatterChart.propTypes = {
   animate: PropTypes.shape({}),
   colorScale: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
@@ -92,8 +87,8 @@ LineChart.propTypes = {
   ).isRequired,
 };
 
-LineChart.defaultProps = {
-  animate: false,
+ScatterChart.defaultProps = {
+  animate: PropTypes.shape({}),
 };
 
-export default LineChart;
+export default ScatterChart;
