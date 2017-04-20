@@ -29,6 +29,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
+    "d3": "^4.8.0",
     "ihme-ui": "file:../ihme-ui",
     "lodash": "^4.17.4",
     "react": "^15.5.4",
