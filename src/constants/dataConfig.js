@@ -1,4 +1,4 @@
-const dataConfig = {
+const lineDataConfig = {
   primaryKeyFields: ['measure', 'risk', 'type', 'location'],
   seriesKeyFields: [
     {
@@ -14,4 +14,20 @@ const dataConfig = {
   },
 };
 
-export default dataConfig;
+const mapDataConfig = {
+  primaryKeyFields: ['measure', 'risk', 'type', 'year'],
+  seriesKeyFields: [
+    {
+      key: 'location',
+      model: 'randomWalk',
+      startRange: [100, 1500],
+      uncertainty: 500,
+    },
+  ],
+  dataKeyField: {
+    key: 'mean',
+    uncertainty: ['mean_lb', 'mean_ub'],
+  },
+};
+
+export { lineDataConfig, mapDataConfig };
