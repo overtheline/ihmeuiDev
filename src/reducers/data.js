@@ -2,8 +2,7 @@ import { assign, forEach, groupBy, map, reduce, sortBy } from 'lodash';
 
 function getBounds(...params) {
   return (acc, datum) => {
-    let min = acc[0];
-    let max = acc[1];
+    let [min, max] = acc;
 
     forEach(params, (param) => {
       if (datum[param] < min) {
