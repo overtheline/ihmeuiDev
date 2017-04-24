@@ -38,9 +38,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.cache = new CacheTree(['measure', 'risk', 'type', 'location', 'year'], 100000);
+    this.mapCache = new CacheTree(['measure', 'risk', 'type', 'year', 'location'], 100000);
 
     this.state = {
       cache: this.cache,
+      mapCache: this.mapCache,
       lineSettings: {
         measure: 'A',
         risk: 123,
@@ -85,12 +87,12 @@ class App extends React.Component {
 
       const choroplethLocationList = map(
         topology.objects.national.geometries,
-        geo => Number(geo.properties.loc_id),
+        geo => geo.properties.loc_id,
       );
       const mapSettings = assign({}, this.state.mapSettings, { location: choroplethLocationList });
       const mapData = mapDataGenerator.getData(mapSettings);
 
-      this.cache.set(mapData);
+      this.mapCache.set(mapData);
       this.setState({
         mapSettings,
         mapData,
@@ -101,20 +103,32 @@ class App extends React.Component {
 
   onChangeMeasure(_, nextMeasure) {
     const lineSettings = assign({}, this.state.lineSettings, { measure: nextMeasure });
-    let nextData;
-
+    let nextLineData;
     if (this.cache.has(lineSettings)) {
-      nextData = this.cache.get(lineSettings);
+      nextLineData = this.cache.get(lineSettings);
     } else {
-      nextData = lineDataGenerator.getData(lineSettings);
-      this.cache.set(nextData);
+      nextLineData = lineDataGenerator.getData(lineSettings);
+      this.cache.set(nextLineData);
     }
+
+    const mapSettings = assign({}, this.state.mapSettings,  { measure: nextMeasure });
+    let nextMapData;
+    if (this.mapCache.has(mapSettings)) {
+      nextMapData = this.mapCache.get(mapSettings);
+    } else {
+      nextMapData = mapDataGenerator.getData(mapSettings);
+      this.mapCache.set(nextMapData);
+    }
+
 
     this.setState({
       lineSettings,
-      lineData: lineDataReducer(nextData),
-      xDomain: lineDomainReducer(nextData),
-      yDomain: lineRangeReducer(nextData),
+      mapSettings,
+      lineData: lineDataReducer(nextLineData),
+      xDomain: lineDomainReducer(nextLineData),
+      yDomain: lineRangeReducer(nextLineData),
+      mapData: nextMapData,
+      mapDomain: mapDomainReducer(nextMapData),
     });
   }
 
