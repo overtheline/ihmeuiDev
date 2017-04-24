@@ -3,6 +3,8 @@ import Map from '../../../ihme-ui/src/ui/compositions/map';
 
 const MapChart = function mapChart(props) {
   const {
+    height,
+    width,
     topology,
     data,
     selectedChoroplethDomain,
@@ -10,6 +12,8 @@ const MapChart = function mapChart(props) {
     onResetScale,
     onSliderMove,
   } = props;
+
+  const style = { height, width };
 
   if (!topology) return null;
 
@@ -23,13 +27,16 @@ const MapChart = function mapChart(props) {
       onResetScale={onResetScale}
       onSliderMove={onSliderMove}
       topology={topology}
-      unit="Total of death"
+      unit="Total deaths"
       valueField={'mean'}
+      style={style}
     />
   );
 };
 
 MapChart.propTypes = {
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   topology: PropTypes.shape({
     objects: PropTypes.object.isRequired,
