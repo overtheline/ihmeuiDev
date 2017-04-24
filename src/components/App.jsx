@@ -1,8 +1,9 @@
 import React from 'react';
 import { assign, bindAll, map } from 'lodash';
 import { json } from 'd3';
-import styles from './App.css';
-// import printFib from './Fib';
+import {
+  ResponsiveContainer,
+} from 'ihme-ui';
 import FAData from '../../../ihme-ui/src/test-utils/data2';
 import CacheTree from '../utils/cachetree';
 import colorScale from '../utils/color';
@@ -12,13 +13,23 @@ import ScatterChart from './ScatterChart';
 import MapChart from './MapChart';
 import Controls from './Controls';
 
-import { lineDataConfig, mapDataConfig } from '../constants/dataConfig';
-import { locationList, yearList } from '../constants/metadata';
+import {
+  lineDataConfig,
+  mapDataConfig,
+} from '../constants/dataConfig';
+import {
+  locationList,
+  yearList,
+} from '../constants/metadata';
 
-import { lineDataReducer, lineDomainReducer, lineRangeReducer, mapDomainReducer } from '../reducers/data';
+import {
+  lineDataReducer,
+  lineDomainReducer,
+  lineRangeReducer,
+  mapDomainReducer,
+} from '../reducers/data';
 
-// development components
-// import Timer from '../../../ihme-ui/src/ui/animate/src/utils/Timer';
+import styles from './App.css';
 
 const lineDataGenerator = new FAData(lineDataConfig);
 const mapDataGenerator = new FAData(mapDataConfig);
@@ -122,47 +133,53 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.app}>
-        <h1>Charts</h1>
-        <div className={styles['charts-container']}>
+        <div className={styles['title-container']}>
+          <h1>Charts</h1>
+        </div>
+        <div className={styles['view-container']}>
           <div className={styles.chart}>
-            <p>This chart animates on the path in the line component.</p>
-            <LineChart
-              animate={{}}
-              width={500}
-              height={250}
-              xDomain={this.state.xDomain}
-              yDomain={this.state.yDomain}
-              data={this.state.lineData}
-              colorScale={colorScale}
-            />
+            <ResponsiveContainer>
+              <LineChart
+                animate={{}}
+                xDomain={this.state.xDomain}
+                yDomain={this.state.yDomain}
+                data={this.state.lineData}
+                colorScale={colorScale}
+                />
+            </ResponsiveContainer>
           </div>
           <div className={styles.chart}>
-            <p>This chart animates on the path in the shape component.</p>
-            <ScatterChart
-              animate={{}}
-              width={500}
-              height={250}
-              xDomain={this.state.xDomain}
-              yDomain={this.state.yDomain}
-              data={this.state.lineData}
-              colorScale={colorScale}
-            />
+            <ResponsiveContainer>
+              <ScatterChart
+                animate={{}}
+                xDomain={this.state.xDomain}
+                yDomain={this.state.yDomain}
+                data={this.state.lineData}
+                colorScale={colorScale}
+                />
+            </ResponsiveContainer>
+          </div>
+          <div className={styles.chart}>
+            <ResponsiveContainer>
+              <MapChart
+                height={100}
+                width={100}
+                topology={this.state.topology}
+                data={this.state.mapData}
+                range={this.state.mapDomain}
+                selectedChoroplethDomain={this.state.selectedChoroplethDomain}
+                onResetScale={this.onResetScale}
+                onSliderMove={this.onSliderMove}
+                />
+            </ResponsiveContainer>
           </div>
         </div>
-        <div className={styles['map-chart-container']}>
-          <MapChart
-            topology={this.state.topology}
-            data={this.state.mapData}
-            range={this.state.mapDomain}
-            selectedChoroplethDomain={this.state.selectedChoroplethDomain}
-            onResetScale={this.onResetScale}
-            onSliderMove={this.onSliderMove}
-          />
+        <div className={styles['controls-container']}>
+          <Controls
+            onChangeMeasure={this.onChangeMeasure}
+            selectedMeasure={this.state.lineSettings.measure}
+            />
         </div>
-        <Controls
-          onChangeMeasure={this.onChangeMeasure}
-          selectedMeasure={this.state.lineSettings.measure}
-        />
       </div>
     );
   }
