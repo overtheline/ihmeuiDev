@@ -20,8 +20,8 @@ const mapDataConfig = {
     {
       key: 'location',
       model: 'randomWalk',
-      startRange: [100, 1500],
-      uncertainty: 500,
+      startRange: [100, 150],
+      uncertainty: 20,
     },
   ],
   dataKeyField: {
